@@ -1,0 +1,79 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 19px 45px;
+    align-items: center;
+    box-shadow: 0 1px 4px 0 #e2e8f0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1000;
+    background-color: white;
+}
+
+.header__navigation {
+    display: flex;
+    align-items: center;
+}
+
+.header__navigation__logo {
+    margin-right: 40px;
+}
+
+.header__navigation__menu__list {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.header__navigation__menu__list__item__link {
+    display: flex;
+    color: #0f172a;
+}
+
+.header__navigation__menu__list__item__link img {
+    margin-right: 5px;
+}
+
+.header__navigation__menu__list__item__link__active {
+    display: flex;
+    color: #0f172a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    background-color: #f1f5f9;
+}
+
+.header__actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.header__actions__item__button__question {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+}
+
+.header__actions__item__button__icon svg {
+    display: inline-block;
+}
+
+.header__actions__item__button__join,
+.header__actions__item__button__login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 22px;
+    background: linear-gradient(to right, #427dff, #44d5bb);
+    gap: 11px;
+    font-weight: 600;
+}

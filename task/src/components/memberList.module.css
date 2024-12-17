@@ -1,0 +1,13 @@
+.member {
+    overflow-y: auto;
+    height: 27.5rem;
+    scrollbar-width: thin;
+}
+
+.member__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 57px;
+    gap: 20px;
+    cursor: pointer;
+}

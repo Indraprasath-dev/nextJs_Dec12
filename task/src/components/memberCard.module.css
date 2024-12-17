@@ -1,0 +1,183 @@
+.card {
+    width: 270px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px #0000001a;
+    background-color: white;
+}
+
+.card__imagecontainer {
+    background-color: #f9fafc;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card__imagecontainer__image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.card__imagecontainer__image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card__details {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 25px 0;
+}
+
+.card__details__container {
+    width: 100%;
+}
+
+.card__details__container__name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.card__details__container__name__region,
+.card__details__container__name__region__country {
+    font-weight: 500;
+    color: #444;
+    font-size: 1em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.card__divider {
+    background-color: #d1d5db;
+    height: 0.8px;
+    width: 100%;
+}
+
+.card__skills {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+    background-color: white;
+    padding: 10px;
+    height: 65px;
+}
+
+.card__skills__divider__list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.card__skills__list__item {
+    font-weight: 300;
+    color: #555;
+    font-size: 0.8em;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background-color: #f9fafc;
+}
+
+
+.card__skills__list__item__more {
+    position: relative;
+}
+/* 
+.tooltip__text {
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltip__text {
+    visibility: visible;
+} */
+
+/* extra */
+.card__skills__span {
+    background-color: #d1d5db;
+    height: 0.8px;
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.member__product {
+    position: relative;
+    font-weight: 300; 
+    color: #555; 
+    font-size: 0.8em;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background-color: #f9fafc;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+.member__product__tooltip {
+    position: relative;
+    font-weight: 300; 
+    color: #555; 
+    font-size: 0.8em;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background-color: #f9fafc;
+    /* white-space: nowrap;
+    overflow: hidden;  */
+    text-overflow: ellipsis; 
+}
+
+
+.member__product__tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+.member__product__tooltip   .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+  
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .member__product__tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+

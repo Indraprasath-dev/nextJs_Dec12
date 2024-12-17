@@ -1,0 +1,14 @@
+{
+    "regions": [
+        "Asia",
+        "Africa",
+        "Not Defined"
+    ],
+    "countries": [
+        "Brazil",
+        "India",
+        "China",
+        "US",
+        "UK"
+    ]
+}

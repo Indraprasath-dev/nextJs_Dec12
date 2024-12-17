@@ -1,0 +1,113 @@
+.filter {
+    display: flex;
+    background-color: #F1F5F9;
+    color: #0F172A;
+
+}
+
+.filter__panel {
+    overflow-y: auto;
+    height: 32.7rem;
+    scrollbar-width: thin;
+    width: 23.5%;
+    margin-top: 5rem;
+}
+
+.filter__panel__background {
+    background-color: white;
+}
+
+.filter__content {
+    width: 77.5%;
+    margin-top: 31px;
+    padding-bottom: 5px;
+}
+
+.filter__content__header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 75px 0 8px 55px;
+    /*  position: fixed; */
+    background-color: #F1F5F9;
+    width: 100%;
+}
+
+.filter__content__header__search{
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    border: none;
+}
+
+.filter__content__header__search input {
+    padding: 5px;
+    width: 300px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+
+.member__content_search img {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.filter__content__header__search input::placeholder {
+    font-size: 14px;
+    color: #A0AEC0;
+}
+
+.filter__content__header__title h1 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.filter__content__header__title__span {
+    font-size: 14;
+    font-weight: 400;
+    color: #4B5563;
+}
+
+
+
+
+.filter__content__header__span {
+    height: 28px;
+    width: 1px;
+    background-color: #D1D5DB;
+}
+
+.filter__content__header__sort {
+    display: flex;
+    background-color: white;
+    align-items: center;
+    padding: 8px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.filter__content__header__sort__wrapper, .filter__content__header__sort__text {
+    margin-right: 8px;
+}
+
+.filter__content__header__view {
+    display: flex;
+    cursor: pointer;
+}
+
+.filter__content__header__view__grid {
+    background-color: #DBEAFE;
+    padding: 6px 10px;
+    border-radius: 8px 0 0 8px;
+}
+
+.filter__content__header__view__list {
+    background-color: white;
+    padding: 6px 7px;
+    border-radius: 3px;
+    border-radius: 0 8px 8px 0;
+
+}
