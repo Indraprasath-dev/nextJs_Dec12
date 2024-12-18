@@ -1,10 +1,10 @@
-import { fetchData, fetchDataByLocation } from "@/apiService/memberApi";
+import { fetchData, fetchDataByLocation, Filters } from "@/apiService/memberApi";
 import FilterPanel from "@/components/filterPanel";
 import MemberList from "@/components/memberList";
 import styles from './page.module.css';
 
 interface MemberProps {
-    searchParams: {[key: string]: string | undefined};
+    searchParams: { [key: string]: string | undefined };
 }
 
 const Page = async ({ searchParams }: MemberProps) => {
@@ -23,8 +23,8 @@ const Page = async ({ searchParams }: MemberProps) => {
     return (
         <div className={styles.filter}>
             <div className={styles.filter__panel}>
-                <div className={styles.filter__panel__background}>
-                    <FilterPanel locationData={locationData} specificLocationData={specificLocationData}/>
+                <div className={styles.filter__panel__container}>
+                    <FilterPanel locationData={locationData} specificLocationData={specificLocationData} />
                 </div>
             </div>
             <div className={styles.filter__content}>
@@ -66,15 +66,14 @@ const Page = async ({ searchParams }: MemberProps) => {
                 </div>
                 <MemberList initialData={initialData} params={params} />
             </div>
-            
         </div>
     )
 }
 
 export default Page;
 
-const getData = async(params: any) => {
-    
+const getData = async (params: Filters) => {
+
     const [initialData, locationData, specificLocationData] = await Promise.all([
         fetchData(1, params),
         fetchDataByLocation({}),

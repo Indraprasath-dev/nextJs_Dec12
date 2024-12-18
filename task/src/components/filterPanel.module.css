@@ -1,16 +1,16 @@
-.filterSection {
+.filter {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 28px 15px 40px;
 }
 
-.filterSection__control {
+.filter__control {
   font-weight: 600;
   font-size: 18px;
 }
 
-.filterSection__control__clear {
+.filter__control__clear {
   color: #156ff7;
   font-weight: 400;
   font-size: 13px;
@@ -21,7 +21,7 @@
   padding: 20px 0 0 40px;
 }
 
-.filterSection__divider {
+.filter__divider {
   height: 0.8px;
   width: 100%;
   background-color: #d1d5db;

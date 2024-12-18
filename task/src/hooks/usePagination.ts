@@ -235,41 +235,65 @@
 //   };
 // }
 
-import { fetchData } from '@/apiService/memberApi';
-import { decodeAction } from 'next/dist/server/app-render/entry-base';
+
+
+// import { useState, useEffect } from 'react';
+
+// interface UsePaginationParams {
+//   observerElement: HTMLElement | null;
+// }
+
+// const usePagination = ({ observerElement }: any) => {
+//   const [page, setPage] = useState(1);
+
+//   useEffect(() => {
+//     if (!observerElement) return;
+
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         if (entries[0].isIntersecting) {
+//           setPage((prevPage) => prevPage + 1);
+//         }
+//       },
+//       { threshold: 0.1, rootMargin: '50px' }
+//     );
+
+//     observer.observe(observerElement);
+
+//     return () => {
+//       observer.disconnect();
+//     };
+//   }, [observerElement]);
+
+//   return page;
+// };
+
+// export default usePagination;
+
+
+
+
+//working code
+import { fetchData, Filters } from '@/apiService/memberApi';
+import { Members } from '@/components/memberList';
 import { useState, useEffect, useCallback } from 'react';
 
-interface Params {
-    region?: string;
-    country?: string;
-    officeHours?: boolean;
-    openToCollaborate?: boolean;
-    friends?: boolean;
-    newMember?: boolean;
-}
 
-interface PaginationResult<T> {
-    users: any;
-    loading: boolean;
-    error?: Error;
-    hasMore: boolean;
-}
-
-const usePagination =(initialData: any,params: Params)=> {
+const usePagination = (initialData: Members, params: Filters) => {
     const [users, setUsers] = useState<any>(initialData);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(2);
     const [hasMore, setHasMore] = useState(true);
-    
 
     useEffect(() => {
         setUsers(initialData);
         setPage(2);
         setHasMore(true);
-    }, [params]);
+    
+    }, [initialData, params]);
 
     const fetchMoreUsers = useCallback(async () => {
-        if (loading || !hasMore) return;
+        if (loading || !hasMore ) return;
 
         try {
             setLoading(true);
@@ -277,13 +301,17 @@ const usePagination =(initialData: any,params: Params)=> {
             const newData = await fetchData(page, params);
             const newUsers = newData.members || [];
 
+            if (newUsers.length < 30) {
+                setHasMore(false);
+            }
+
             if (newUsers.length === 0) {
                 setHasMore(false);
                 return;
             }
 
             setUsers((prevUsers: any) => {
-                const prevMembers = prevUsers.members || [];
+                const prevMembers = prevUsers.members;
                 return {
                     ...newData,
                     members: [...prevMembers, ...newUsers],
@@ -292,22 +320,21 @@ const usePagination =(initialData: any,params: Params)=> {
 
             setPage((prevPage) => prevPage + 1);
         } catch (error) {
-            console.log("Error occured "+ error)
+            console.log("Error occured " + error)
         } finally {
             setLoading(false);
         }
     }, [page, params, loading, hasMore]);
 
-    // Intersection Observer for infinite scroll
     useEffect(() => {
         const triggerElement = document.getElementById('scroll-trigger');
+        console.log('element',triggerElement)
 
         if (!triggerElement) return;
 
         const observer = new IntersectionObserver(
             (entries) => {
-                const first = entries[0];
-                if (first.isIntersecting && !loading && hasMore) {
+                if (entries[0].isIntersecting && !loading && hasMore) {
                     fetchMoreUsers();
                 }
             },
@@ -324,11 +351,7 @@ const usePagination =(initialData: any,params: Params)=> {
         };
     }, [fetchMoreUsers, loading, hasMore]);
 
-    return {
-        users,
-        loading,
-        hasMore
-    };
+    return {users, loading, hasMore};
 }
 
 

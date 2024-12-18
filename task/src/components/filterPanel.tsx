@@ -2,7 +2,17 @@
 import styles from './filterPanel.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const FilterPanel = ({ locationData, specificLocationData }: { locationData: any, specificLocationData: any }) => {
+export interface FilterData {
+    countries: string[],
+    regions: string[]
+}
+
+interface LocationProps {
+    locationData: FilterData;
+    specificLocationData: FilterData;
+}
+
+const FilterPanel = ({ locationData, specificLocationData }: LocationProps) => {
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -55,16 +65,16 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
 
     return (
         <>
-            <div className={styles.filterSection}>
-                <div className={styles.filterSection__control}>Filters</div>
-                <div className={styles.filterSection__control__clear}>
+            <div className={styles.filter}>
+                <div className={styles.filter__control}>Filters</div>
+                <div className={styles.filter__control__clear}>
                     <button onClick={handleClearFilters} disabled={!hasFilters}>
                         Clear Filters
                     </button>
                 </div>
             </div>
 
-            <div className={styles.filterSection__divider}></div>
+            <div className={styles.filter__divider}></div>
 
             <div className={styles.filter__list}>
                 <div className={styles.filter__list__item}>
@@ -73,8 +83,7 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                         <input
                             type="checkbox"
                             checked={searchParams.get('OfficeHours') === 'true'}
-                            onChange={() => handleToggle('OfficeHours')}
-                        />
+                            onChange={() => handleToggle('OfficeHours')} />
                         <span className={styles.filter__list__item__title__toggle__slider}></span>
                     </label>
                 </div>
@@ -85,8 +94,7 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                         <input
                             type="checkbox"
                             checked={searchParams.get('OpenToCollaborate') === 'true'}
-                            onChange={() => handleToggle('OpenToCollaborate')}
-                        />
+                            onChange={() => handleToggle('OpenToCollaborate')} />
                         <span className={styles.filter__list__item__title__toggle__slider}></span>
                     </label>
                 </div>
@@ -97,8 +105,7 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                         <input
                             type="checkbox"
                             checked={searchParams.get('Friends') === 'true'}
-                            onChange={() => handleToggle('Friends')}
-                        />
+                            onChange={() => handleToggle('Friends')} />
                         <span className={styles.filter__list__item__title__toggle__slider}></span>
                     </label>
                 </div>
@@ -109,8 +116,7 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                         <input
                             type="checkbox"
                             checked={searchParams.get('NewMember') === 'true'}
-                            onChange={() => handleToggle('NewMember')}
-                        />
+                            onChange={() => handleToggle('NewMember')} />
                         <span className={styles.filter__list__item__title__toggle__slider}></span>
                     </label>
                 </div>
@@ -139,9 +145,7 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                 <h2>Country</h2>
                 <div className={styles.filter__country__divider__list}>
                     {locationData?.countries?.map((country: any) => {
-                        // Check if a specific region is selected
                         const isRegionSelected = !!searchParams.get('region');
-                        // If no region is selected, disable all country buttons
                         const isDisabled = !isRegionSelected ||
                             (isRegionSelected && !specificLocationData?.countries?.includes(country));
                         const isActive = searchParams.get('country') === country;
@@ -152,8 +156,8 @@ const FilterPanel = ({ locationData, specificLocationData }: { locationData: any
                                 disabled={isDisabled}
                                 onClick={() => handleCountry(country)}
                                 className={`${styles.filter__country__divider__list__button} ${isActive
-                                        ? styles.filter__country__divider__list__button__active
-                                        : ''
+                                    ? styles.filter__country__divider__list__button__active
+                                    : ''
                                     } ${isDisabled
                                         ? styles.filter__country__divider__list__button__active__disabled
                                         : ''

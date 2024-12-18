@@ -1,7 +1,15 @@
 import { API_BASE_URL, DEFAULT_LIMIT } from "@/constants/constants";
 
+export interface Filters {
+    region?: string;
+    country?: string;
+    officeHours?: boolean;
+    openToCollaborate?: boolean;
+    friends?: boolean;
+    newMember?: boolean;
+}
 
-export const fetchData = async (pageNumber: number, params: { [key: string]: any }) => {
+export const fetchData = async (pageNumber: number, params: Filters) => {
     const searchParams = new URLSearchParams();
 
     if (params.officeHours) searchParams.append("officeHours__not", "null");
@@ -15,13 +23,13 @@ export const fetchData = async (pageNumber: number, params: { [key: string]: any
     if (params.country) searchParams.append("location.country__with", params.country);
 
     const response = await fetch(`${API_BASE_URL}?pagination=true&page=${pageNumber}&limit=${DEFAULT_LIMIT}&select=uid,name,location,skills,officeHours,openToWork,plnFriend,isVerified,isFeatured&${searchParams}`)
-    
+
     const data = await response.json();
 
     return data;
 }
 
-export const fetchDataByLocation = async (params: any) => {
+export const fetchDataByLocation = async (params: Filters) => {
     const searchParams = new URLSearchParams();
 
     if (params.region) searchParams.append("location.continent__with", params.region);
@@ -29,7 +37,7 @@ export const fetchDataByLocation = async (params: any) => {
     const response = await fetch(`${API_BASE_URL}/filters?${searchParams}`)
 
     const data = await response.json();
-    
+
     return data;
 }
 

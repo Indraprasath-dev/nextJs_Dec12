@@ -151,27 +151,98 @@
 import styles from "./memberList.module.css";
 import Card from "./memberCard";
 import Loader from "./loader";
-import usePagination from "@/hooks/usePagination";
+import usePagination from "@/hooks/uptUsePagination";
+import { fetchData, Filters } from "@/apiService/memberApi";
+import { useEffect, useRef, useState } from "react";
 
-interface Params {
-    region?: string;
-    country?: string;
-    officeHours?: boolean;
-    openToCollaborate?: boolean;
-    friends?: boolean;
-    newMember?: boolean;
+export interface Location {
+    uid: string;
+    placeId: string;
+    city: string;
+    country: string;
+    continent: string;
+    region: string | null;
+    regionAbbreviation: string | null;
+    metroArea: string | null;
+    latitude: number;
+    longitude: number;
+    createdAt: string;
+    updatedAt: string;
 }
 
-interface MemberClientComponentProps {
-    initialData: any;
-    params: Params;
+export interface Skill {
+    uid: string;
+    title: string;
+    description: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
-export default function MemberClientComponent({initialData,params}: MemberClientComponentProps) {
-    const { users, loading, hasMore } = usePagination(initialData, params);
+export interface Member {
+    uid: string;
+    name: string;
+    location: Location;
+    skills: Skill[];
+    officeHours: string | null;
+    openToWork: boolean;
+    plnFriend: boolean;
+    isVerified: boolean;
+}
 
-    const memberUsers = users?.members || []
-    const isEmpty = !loading && memberUsers.length === 0
+export interface Members {
+    count: number;
+    members: Member[];
+}
+
+
+interface MemberProps {
+    initialData: Members;
+    params: Filters;
+}
+
+  
+const Member = ({ initialData, params }: MemberProps) => {
+    const scrollTriggerRef = useRef(null);
+    
+    const {currentPage, setCurrentPage} = usePagination({
+        scrollTriggerRef, 
+        totalItems: initialData.count,
+        totalCurrentItems: initialData.members.length 
+    });
+
+    const [users, setUsers] = useState(initialData.members); 
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    const fetchMembers = async (page: number) => {
+        setLoading(true);
+        try {
+            const data = await fetchData(page, params);
+            if (data?.members?.length > 0) {
+                setUsers((prevUsers) => [...prevUsers, ...data.members]); 
+            } else {
+                setHasMore(false); 
+            }
+        } catch (error) {
+            console.error("Error fetching members:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (currentPage > 1) {
+            fetchMembers(currentPage);
+        }
+    }, [currentPage]);
+
+    useEffect(() => {
+        setUsers(initialData.members);
+        setCurrentPage(1); 
+        setHasMore(true); 
+    }, [params, initialData.members]);
+
+    const isEmpty = !loading && users.length === 0;
 
     return (
         <div className={styles.member}>
@@ -180,14 +251,86 @@ export default function MemberClientComponent({initialData,params}: MemberClient
                 {isEmpty ? (
                     <div>No Data Found</div>
                 ) : (
-                    memberUsers.map((item: any) => (
+                    users.map((item: any) => (
                         <Card key={`${item.uid}`} member={item} />
                     ))
                 )}
                 {hasMore && (
-                    <div id="scroll-trigger" className="infinite-scroll-trigger" />
+                    <div id="scroll-trigger" className="infinite-scroll-trigger" ref={scrollTriggerRef} />
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default Member;
+
+
+
+
+
+// const Member =({initialData, params}: MemberProps) => {
+//     const {currentPage, setCurrentPage} = usePagination();
+
+
+//     const isEmpty = !loading && memberUsers.length === 0
+
+   
+//     return (
+//         <div  className={styles.member}>
+//             {loading && <Loader />}
+//             <div className={styles.member__list}>
+//                 {isEmpty ? (
+//                     <div>No Data Found</div>
+//                 ) : (
+//                     memberUsers.map((item: any) => (
+//                         <Card key={`${item.uid}`} member={item} />
+//                     ))
+//                 )}
+//                 {hasMore && (
+//                     <div id="scroll-trigger" className="infinite-scroll-trigger" />
+//                 )}
+//             </div>
+//         </div>
+//     )
+// }
+
+// export default Member;
+
+
+//here scrolling comes top, after filtering code
+
+// const Member =({initialData, params}: MemberProps) => {
+//     const {users, loading, hasMore} = usePagination(initialData, params);
+
+//     const memberRef = useRef<HTMLDivElement>(null);
+
+//     const memberUsers = users?.members || []
+//     const isEmpty = !loading && memberUsers.length === 0
+
+//     useEffect(() => {
+//         if (memberRef.current) {
+//             memberRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+//         }
+//     }, [initialData, params])
+
+//     return (
+//         <div ref={memberRef}  className={styles.member}>
+//             {loading && <Loader />}
+//             <div className={styles.member__list}>
+//                 {isEmpty ? (
+//                     <div>No Data Found</div>
+//                 ) : (
+//                     memberUsers.map((item: any) => (
+//                         <Card key={`${item.uid}`} member={item} />
+//                     ))
+//                 )}
+//                 {hasMore && (
+//                     <div id="scroll-trigger" className="infinite-scroll-trigger" />
+//                 )}
+//             </div>
+//         </div>
+//     )
+// }
+
+// export default Member;
