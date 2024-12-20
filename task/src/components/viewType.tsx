@@ -15,21 +15,17 @@ const ViewType = () => {
 
     return (
         <div className={styles.filter__content__header__view}>
-            <div
-                className={`${styles.filter__content__header__view__grid} ${
+            <div className={`${styles.filter__content__header__view__grid} ${
                     viewType === 'grid View' ? styles.active : ''
                 }`}
-                onClick={() => handleViewChange('grid View')}
-            >
+                onClick={() => handleViewChange('grid View')}>
                 <img src="./grid.svg" alt="Grid View" />
             </div>
 
-            <div
-                className={`${styles.filter__content__header__view__list} ${
+            <div className={`${styles.filter__content__header__view__list} ${
                     viewType === 'list view' ? styles.active : ''
                 }`}
-                onClick={() => handleViewChange('list view')}
-            >
+                onClick={() => handleViewChange('list view')}>
                 <img src="./list.svg" alt="List View" />
             </div>
         </div>

@@ -12,6 +12,8 @@ export interface Filters {
     searchBy?: string;
     sort?: string;
     viewType?: string;
+    memberRoles?: any;
+    searchText?: string;
 }
 
 export const fetchData = async (pageNumber: number, params: Filters) => {
@@ -33,6 +35,10 @@ export const fetchData = async (pageNumber: number, params: Filters) => {
     if (params.sort) {
         const orderBy = params.sort === 'desc' ? '-name' : 'name'; 
         searchParams.append("orderBy", orderBy);
+    }
+
+    if (params.memberRoles && params.memberRoles.length > 0) {
+        searchParams.append("memberRoles", params.memberRoles.join(","));
     }
 
     const url = `${API_BASE_URL}?pagination=true&page=${pageNumber}&limit=${DEFAULT_LIMIT}&select=uid,name,location,skills,officeHours,openToWork,plnFriend,isVerified,isFeatured&${searchParams}`
@@ -61,9 +67,12 @@ export const fetchDataByLocation = async (params: Filters) => {
 }
 
 
-export const fetchDataByRoles = async () => {
+export const fetchDataByRoles = async (params: any) => {
+    const searchParams = new URLSearchParams();
+
+    if(params.searchText) searchParams.append("searchText", params.searchText)
    
-    const response = await fetch(`${API_BASE_URL}/roles`)
+    const response = await fetch(`${API_BASE_URL}/roles?${searchParams}`)
 
     const data = await response.json();
 

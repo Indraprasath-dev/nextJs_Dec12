@@ -23,16 +23,18 @@ const Page = async ({ searchParams }: MemberProps) => {
         metroArea: searchParams.metroArea,
         searchBy: searchParams.searchBy,
         sort: searchParams.sort,
-        viewType: searchParams.viewType
+        viewType: searchParams.viewType,
+        memberRoles: searchParams.memberRoles ? searchParams.memberRoles.split("|") : [],
+        searchText: searchParams.searchText
     };
 
-    const { initialData, locationData, specificLocationData, roles } = await getData(params)
+    const { initialData, locationData, specificLocationData, roles, specificRoles } = await getData(params)
 
     return (
         <div className={styles.filter}>
             <div className={styles.filter__panel}>
                 <div className={styles.filter__panel__container}>
-                    <FilterPanel locationData={locationData} specificLocationData={specificLocationData} roles={roles} />
+                    <FilterPanel locationData={locationData} specificLocationData={specificLocationData} roles={roles}  specificRoles={specificRoles} />
                 </div>
             </div>
             <div className={styles.filter__content}>
@@ -59,13 +61,14 @@ export default Page;
 
 const getData = async (params: Filters) => {
 
-    const [initialData, locationData, specificLocationData, roles] = await Promise.all([
+    const [initialData, locationData, specificLocationData, roles, specificRoles] = await Promise.all([
         fetchData(1, params),
         fetchDataByLocation({}),
         fetchDataByLocation(params),
-        fetchDataByRoles()
+        fetchDataByRoles({}),
+        fetchDataByRoles(params)
     ]);
-    return { initialData, locationData, specificLocationData, roles };
+    return { initialData, locationData, specificLocationData, roles, specificRoles };
 }
 
 

@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./filterPanel.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_VISIBLE_COUNT } from "@/constants/constants";
+import { fetchDataByRoles } from "@/apiService/memberApi";
 
 export interface FilterData {
     skills: string[];
@@ -17,14 +18,10 @@ interface LocationProps {
     specificLocationData: FilterData;
 }
 
-const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
+const FilterPanel = ({ locationData, specificLocationData, roles, specificRoles }: any) => {
     const [visibleRegions, setVisibleRegions] = useState(DEFAULT_VISIBLE_COUNT);
-    const [visibleCountries, setVisibleCountries] = useState(
-        DEFAULT_VISIBLE_COUNT
-    );
-    const [visibleMetroAreas, setVisibleMetroAreas] = useState(
-        DEFAULT_VISIBLE_COUNT
-    );
+    const [visibleCountries, setVisibleCountries] = useState(DEFAULT_VISIBLE_COUNT);
+    const [visibleMetroAreas, setVisibleMetroAreas] = useState(DEFAULT_VISIBLE_COUNT);
     const [visibleSkills, setVisibleSkills] = useState(DEFAULT_VISIBLE_COUNT);
 
     const router = useRouter();
@@ -32,10 +29,9 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
 
     const hasFilters = searchParams.toString().length > 0;
 
-    const activeFiltersCount = Array.from(searchParams.entries()).filter(
-        ([key]) => {
-            return key !== "searchBy" && key !== "sort" && key !== "viewType";
-        }
+    const activeFiltersCount = Array.from(searchParams.entries()).filter(([key]) => {
+        return key !== "searchBy" && key !== "sort" && key !== "viewType";
+    }
     ).length;
 
     const handleRegion = (region: string) => {
@@ -105,9 +101,7 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
         router.push(`/members?${params.toString()}`);
     };
 
-    const handleShowMore = (
-        type: "region" | "country" | "metroArea" | "skills"
-    ) => {
+    const handleShowMore = (type: "region" | "country" | "metroArea" | "skills") => {
         if (type === "region") {
             setVisibleRegions(locationData.regions.length);
         } else if (type === "country") {
@@ -119,9 +113,7 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
         }
     };
 
-    const handleShowLess = (
-        type: "region" | "country" | "metroArea" | "skills"
-    ) => {
+    const handleShowLess = (type: "region" | "country" | "metroArea" | "skills") => {
         if (type === "region") {
             setVisibleRegions(DEFAULT_VISIBLE_COUNT);
         } else if (type === "country") {
@@ -133,6 +125,50 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
         }
     };
 
+    const handleRole = (role: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        const currentRoles = params.get("memberRoles") || "";
+        const rolesArray = currentRoles ? currentRoles.split("|") : [];
+
+        if (rolesArray.includes(role)) {
+            const updatedRoles = rolesArray.filter((item) => item !== role);
+            if (updatedRoles.length === 0) {
+                params.delete("memberRoles");
+            } else {
+                params.set("memberRoles", updatedRoles.join("|"));
+            }
+        } else {
+            rolesArray.push(role);
+            params.set("memberRoles", rolesArray.join("|"));
+        }
+
+        router.push(`/members?${params.toString()}`);
+    };
+
+
+    // const handleSearchText = (searchText: string) => {
+    //     const params = new URLSearchParams(searchParams.toString());
+
+    //     if (searchText.trim() === "") {
+    //         params.delete("searchText");
+    //     } else {
+    //         params.set("searchText", searchText);
+    //     }
+
+    //     router.push(`/members?${params.toString()}`);
+    // };
+
+    const [searchText, setSearchText] = useState("");
+    const [filteredRoles, setFilteredRoles] = useState([]);
+    const handleSearchText = async (text: string) => {
+        setSearchText(text);
+        const params = { searchText: text.trim() };
+
+        const data = await fetchDataByRoles(params);
+        setFilteredRoles(data);
+    };
+
+
     return (
         <>
             <div className={styles.filter}>
@@ -142,9 +178,7 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
                         <span className={styles.filter__control__count}>
                             {activeFiltersCount}
                         </span>
-                    ) : (
-                        ""
-                    )}
+                    ) : " " }
                 </div>
                 <div className={styles.filter__control__clear}>
                     <button onClick={handleClearFilters} disabled={!hasFilters}>
@@ -231,14 +265,49 @@ const FilterPanel = ({ locationData, specificLocationData, roles }: any) => {
                 <div className={styles.filter__region}>
                     <span className={styles.filter__region__divider}></span>
                     <h2>Roles</h2>
+                    <div className={styles.filter__region__search}>
+                        <img src="./search-gray.svg"></img>
+                        <input
+                            type="text"
+                            placeholder="Search Role [eg. Engineer]"
+                            value={searchText}
+                            onChange={(e) => handleSearchText(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Render filtered roles */}
+
+                    {filteredRoles.length > 4 ? (
+                        filteredRoles.slice(4).map((item: any) => (
+                            <div key={item.role} className={styles.specificRoles}>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        value={item.role}
+                                        onChange={() => handleRole(item.role)}
+                                        className={styles.role__inputBox}
+                                    />
+                                </label>
+                                <span className={styles.role__name}>{item.alias || item.role}</span>
+                                <span className={styles.role__count}>{item.count}</span>
+                            </div>
+                        ))
+                    ) : (
+                        ( searchText.length != 0 && filteredRoles.length == 4 ) ? <p>No roles found</p> : " "
+                    )}
+
                     {roles.map((item: any) => (
                         <div key={item.role} className={styles.role}>
                             <label>
                                 <input
                                     type="checkbox"
                                     value={item.role}
-                                    className={styles.role__inputBox}/>
-                                
+                                    checked={searchParams.get("memberRoles")
+                                        ?.split("|")
+                                        .includes(item.role) || false}
+                                    onChange={() => handleRole(item.role)}
+                                    className={styles.role__inputBox} />
+
                             </label>
                             <span className={styles.role__name}>{item.alias ? item.alias : item.role}</span>
                             <span className={styles.role__count}>{item.count}</span>
