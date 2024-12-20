@@ -1,0 +1,25 @@
+.filter__content__header__view {
+    display: flex;
+    cursor: pointer;
+}
+
+.filter__content__header__view__grid, .filter__content__header__view__list {
+    padding: 6px 7px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.filter__content__header__view__grid {
+    background-color: white;
+    border-radius: 8px 0 0 8px;
+}
+
+.filter__content__header__view__list {
+    background-color: white;
+    border-radius: 0 8px 8px 0;
+}
+
+.filter__content__header__view__grid.active, .filter__content__header__view__list.active {
+    background-color:  #dbeafe; 
+    color: white;
+}

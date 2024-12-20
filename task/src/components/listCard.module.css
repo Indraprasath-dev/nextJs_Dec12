@@ -1,0 +1,124 @@
+.listCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    padding: 22px;
+    background-color: #fff;
+    width: 93.5%;
+    box-shadow: 0px 4px 4px 0px#0f172a0a;
+
+}
+
+.listCard__details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.listCard__image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.listCard__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.listCard__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.listCard__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.listCard__region {
+    display: flex;
+    font-size: 15px;
+    font-weight: 400;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+.listCard__country{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.listCard__skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1;
+}
+
+.listCard__skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+.card__skills__list__product {
+    position: relative;
+    font-weight: 300;
+    color: #555;
+    font-size: 0.8em;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background-color: #f9fafc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card__skills__list__tooltip {
+    position: relative;
+    font-weight: 300;
+    color: #555;
+    font-size: 0.8em;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 5px 10px;
+    background-color: #f9fafc;
+    /* white-space: nowrap;
+    overflow: hidden;  */
+    text-overflow: ellipsis;
+}
+
+
+.card__skills__list__tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.card__skills__list__tooltip .card__skills__list__tooltip__tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    right: 1px;
+    top: 30px;
+}
+
+.card__skills__list__tooltip:hover .card__skills__list__tooltip__tooltiptext {
+    visibility: visible;
+}

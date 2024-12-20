@@ -7,7 +7,7 @@ interface MemberListProp {
     member: Member;
 }
 
-const Card = ({ member }: MemberListProp) => {
+const GridCard = ({ member }: MemberListProp) => {
     return (
 
         <div className={styles.card}>
@@ -54,4 +54,4 @@ const Card = ({ member }: MemberListProp) => {
     );
 };
 
-export default Card;
+export default GridCard;

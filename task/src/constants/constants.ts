@@ -6,3 +6,6 @@ export const DEFAULT_LIMIT = 30;
 
 // Default size for slicing
 export const MAX_VISIBLE_SKILLS = 2;
+
+// Default valur for filter
+export const DEFAULT_VISIBLE_COUNT = 10;

@@ -149,11 +149,12 @@
 "use client";
 
 import styles from "./memberList.module.css";
-import Card from "./memberCard";
 import Loader from "./loader";
 import usePagination from "@/hooks/uptUsePagination";
 import { fetchData, Filters } from "@/apiService/memberApi";
 import { useEffect, useRef, useState } from "react";
+import GridCard from "./memberCard";
+import ListCard from "./listCard";
 
 export interface Location {
     uid: string;
@@ -203,7 +204,8 @@ interface MemberProps {
   
 const Member = ({ initialData, params }: MemberProps) => {
     const scrollTriggerRef = useRef(null);
-    
+    const viewType = params.viewType || "grid View";
+
     const {currentPage, setCurrentPage} = usePagination({
         scrollTriggerRef, 
         totalItems: initialData.count,
@@ -252,7 +254,9 @@ const Member = ({ initialData, params }: MemberProps) => {
                     <div>No Data Found</div>
                 ) : (
                     users.map((item: any) => (
-                        <Card key={`${item.uid}`} member={item} />
+                        viewType === "grid View" 
+                            ?   <GridCard key={`${item.uid}`} member={item} />  
+                            :  <ListCard key={`${item.uid}`} member={item} />  
                     ))
                 )}
                 {hasMore && (
